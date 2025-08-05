@@ -1,4 +1,5 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -10,40 +11,35 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.config({
-    extends: [
-      "next",
-      "next/core-web-vitals",
-      "next/typescript",
-      "plugin:prettier/recommended",
-      "plugin:jsx-a11y/recommended",
-      "prettier",
-    ],
-    plugins: ["prettier", "jsx-a11y"],
-    rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          trailingComma: 'all',
-          semi: false,
-          tabWidth: 2,
-          singleQuote: true,
-          printWidth: 80,
-          plugins: ['prettier-plugin-tailwindcss'],
-        },
-      ],
-      'react/react-in-jsx-scope': 'off',
-      'jsx-a11y/alt-text': 'warn',
-      'jsx-a11y/aria-props': 'warn',
-      'jsx-a11y/aria-proptypes': 'warn',
-      'jsx-a11y/aria-unsupported-elements': 'warn',
-      'jsx-a11y/role-has-required-aria-props': 'warn',
-      'jsx-a11y/role-supports-aria-props': 'warn',
-    },
-  }),
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
-    ignores: ['node_modules', '.next', 'dist', 'build', 'public', '.lintstagedrc.js'],
+    plugins: {
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+
+      "@typescript-eslint/no-inferrable-types": "off",
+    }
   },
+  {
+    files: [".cz-config.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+    },
+    rules: {
+      "@typescript-eslint/no-var-requires": "off",
+      "simple-import-sort/imports": "off",
+      "simple-import-sort/exports": "off",
+    }
+  }
 ];
 
 export default eslintConfig;
