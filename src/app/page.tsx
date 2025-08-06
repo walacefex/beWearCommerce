@@ -1,6 +1,8 @@
 import { desc } from 'drizzle-orm'
 import Image from 'next/image'
 
+import CategorySelector from '@/components/common/CategorySelector'
+import Footer from '@/components/common/Footer'
 import { Header } from '@/components/common/Header'
 import ProductList from '@/components/common/ProductList'
 import { db } from '@/db'
@@ -20,6 +22,8 @@ const Home = async () => {
     },
   })
 
+  const categories = await db.query.categoryTable.findMany({})
+
   return (
     <>
       <Header />
@@ -38,6 +42,10 @@ const Home = async () => {
         <ProductList products={products} title="Mais vendidos" />
 
         <div className="px-5">
+          <CategorySelector categories={categories} />
+        </div>
+
+        <div className="px-5">
           <Image
             src="/banner-02.png"
             alt="Leve uma vida com estilo"
@@ -49,6 +57,7 @@ const Home = async () => {
         </div>
 
         <ProductList products={newlyCreatedProducts} title="Novos produtos" />
+        <Footer />
       </div>
     </>
   )
