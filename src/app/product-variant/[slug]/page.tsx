@@ -9,6 +9,9 @@ import { db } from '@/db'
 import { productTable, productVariantTable } from '@/db/schema'
 import { formatCentsToBRL } from '@/helpers/money'
 
+import QuantitySelector from './components/quantity-selector'
+import VariantSelector from './components/variant-selector'
+
 interface ProductVariantPageProps {
   params: Promise<{ slug: string }>
 }
@@ -49,7 +52,12 @@ const ProductPage = async ({ params }: ProductVariantPageProps) => {
           className="h-auto w-full object-cover"
         />
 
-        <div className="px-5">{/*VARIANTES */}</div>
+        <div className="px-5">
+          <VariantSelector
+            selectedVariantSlug={productVariant.slug}
+            variants={productVariant.product.variants}
+          />
+        </div>
 
         <div className="px-5">
           {/* DESCRIÇÃO */}
@@ -63,6 +71,8 @@ const ProductPage = async ({ params }: ProductVariantPageProps) => {
             {formatCentsToBRL(productVariant.priceInCents)}
           </h3>
         </div>
+
+        <QuantitySelector />
 
         <div className="px-5">
           <p className="text-shadow-amber-600">
