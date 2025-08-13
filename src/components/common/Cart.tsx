@@ -1,7 +1,13 @@
 import { ShoppingBasketIcon } from 'lucide-react'
 
 import { Button } from '../ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '../ui/sheet'
 
 export const Cart = () => {
   return (
@@ -11,7 +17,11 @@ export const Cart = () => {
           <ShoppingBasketIcon />
         </Button>
       </SheetTrigger>
-      <SheetContent></SheetContent>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Carrinho</SheetTitle>
+        </SheetHeader>
+      </SheetContent>
     </Sheet>
   )
 }

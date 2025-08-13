@@ -9,14 +9,14 @@ import { db } from '@/db'
 import { productTable, productVariantTable } from '@/db/schema'
 import { formatCentsToBRL } from '@/helpers/money'
 
-import QuantitySelector from './components/quantity-selector'
+import ProductActions from './components/product-actions'
 import VariantSelector from './components/variant-selector'
 
 interface ProductVariantPageProps {
   params: Promise<{ slug: string }>
 }
 
-const ProductPage = async ({ params }: ProductVariantPageProps) => {
+const ProductVariantPage = async ({ params }: ProductVariantPageProps) => {
   const { slug } = await params
   const productVariant = await db.query.productVariantTable.findFirst({
     where: eq(productVariantTable.slug, slug),
@@ -31,14 +31,12 @@ const ProductPage = async ({ params }: ProductVariantPageProps) => {
   if (!productVariant) {
     return notFound()
   }
-
   const likelyProducts = await db.query.productTable.findMany({
     where: eq(productTable.categoryId, productVariant.product.categoryId),
     with: {
       variants: true,
     },
   })
-
   return (
     <>
       <Header />
@@ -72,7 +70,7 @@ const ProductPage = async ({ params }: ProductVariantPageProps) => {
           </h3>
         </div>
 
-        <QuantitySelector />
+        <ProductActions productVariantId={productVariant.id} />
 
         <div className="px-5">
           <p className="text-shadow-amber-600">
@@ -81,10 +79,11 @@ const ProductPage = async ({ params }: ProductVariantPageProps) => {
         </div>
 
         <ProductList title="Talvez você goste" products={likelyProducts} />
+
         <Footer />
       </div>
     </>
   )
 }
 
-export default ProductPage
+export default ProductVariantPage
